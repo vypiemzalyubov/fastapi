@@ -1,4 +1,4 @@
-# fastapi
+# FastAPI
 
 ```python
 # Install FastAPI
