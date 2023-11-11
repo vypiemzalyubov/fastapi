@@ -1,4 +1,16 @@
-# FastAPI
+# Быстрый старт в FastAPI Python
+
+<div id="header" align="center">
+  <img src="https://cdn.stepik.net/media/cache/images/courses/179694/cover_2HZfMiD/e299b805d8a7fec802fadf23c2ab58d5.png" width="100"/>
+</div>
+
+FastAPI - это современный, высокопроизводительный веб-фреймворк для создания API-интерфейсов на Python. В этом курсе вы узнаете, как использовать мощные функции FastAPI для создания надежных, масштабируемых и эффективных веб-приложений. Курс предназначен для быстрого старта в работе с FastAPI и не претендует на всеобъемлемость.
+
+---
+
+- [**Введение в FastAPI**](https://github.com/vypiemzalyubov/fastapi/tree/main/1.%20Introduction%20to%20FastAPI)
+
+---
 
 ```python
 # Install FastAPI
