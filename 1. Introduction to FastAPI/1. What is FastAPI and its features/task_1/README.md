@@ -33,6 +33,6 @@ uvicorn main:app --reload
 ```python
 uvicorn main:app --reload
 ```
-2. Открыть `'http://localhost:8000'` в браузере
+2. Открыть http://localhost:8000 в браузере
 
 Посмотреть Swagger: http://localhost:8000/docs
