@@ -43,7 +43,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "name": "Alice",
-  "message": "Great course! I'm learning a lot."
+  "message": "Great course!"
 }'
 ```
 
