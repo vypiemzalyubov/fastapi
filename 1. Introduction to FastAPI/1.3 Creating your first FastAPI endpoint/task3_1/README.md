@@ -28,3 +28,23 @@
 ```
 
 Пожалуйста, протестируйте свою реализацию с помощью таких инструментов, как "curl", Postman или любой другой клиент API, чтобы отправить отзыв и проверить ответ
+
+---
+
+1. Запустить приложение
+```python
+uvicorn app.main:app --reload
+```
+2. Сделать тестовый запрос в терминале
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/feedback' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Alice",
+  "message": "Great course! I'm learning a lot."
+}'
+```
+
+Посмотреть Swagger: http://localhost:8000/docs
