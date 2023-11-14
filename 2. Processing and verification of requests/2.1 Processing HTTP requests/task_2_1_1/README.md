@@ -45,12 +45,14 @@ uvicorn app.main:app --reload
 2. Сделать тестовый запрос в терминале
 ```bash
 curl -X 'POST' \
-  'http://localhost:8000/user' \
+  'http://localhost:8000/create_user' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
   "name": "Alex",
-  "age": 20
+  "email": "alex@example.com",
+  "age": 18,
+  "is_subscribed": true  
 }'
 ```
 
