@@ -99,16 +99,14 @@ uvicorn app.main:app --reload
 ```
 2. Сделать тестовый запрос в терминале
 ```bash
-curl -X 'POST' \
-  'http://localhost:8000/create_user' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "name": "Alex",
-  "email": "alex@example.com",
-  "age": 18,
-  "is_subscribed": true  
-}'
+curl -X 'GET' \
+  'http://localhost:8000/product/123' \
+  -H 'accept: application/json'
+```
+```bash
+curl -X 'GET' \
+  'http://localhost:8000/products/search?keyword=phone&category=Electronics&limit=10' \
+  -H 'accept: application/json'
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
