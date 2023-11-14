@@ -1,17 +1,17 @@
 from fastapi import FastAPI
-from app.models.user_create import UserCreate
+from app.models.product import Product
 
 
 app = FastAPI()
 
-user_list: list[UserCreate] = []
+sample_products = []
 
 
-@app.post("/create_user", response_model=UserCreate)
-async def create_user(user: UserCreate):
-    add_user(user)
-    return user
+@app.get("/product/{product_id}")
+async def get_product(product_id: int):
+    pass
 
 
-def add_user(user: UserCreate):
-    user_list.append(dict(user))
+@app.get("/products/search")
+async def get_product(keyword: str, category: str = None, limit: int = 10):
+    pass
