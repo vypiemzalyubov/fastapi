@@ -50,5 +50,11 @@ curl -i -X 'POST' \
   "password": "sixstars"  
 }'
 ```
+```python
+curl -X 'GET' \
+  'http://localhost:8000/user' \
+  -H 'accept: application/json' \
+  -H 'Cookie: session_token=secret_token'
+```
 
 Посмотреть Swagger: http://localhost:8000/docs
