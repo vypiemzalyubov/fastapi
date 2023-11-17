@@ -47,14 +47,14 @@ curl -i -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "username": "John",
-  "password": "sixstars"  
+  "password": "Travolta"  
 }'
 ```
 ```python
 curl -X 'GET' \
   'http://localhost:8000/user' \
   -H 'accept: application/json' \
-  -H 'Cookie: session_token=secret_token'
+  -H 'Cookie: session_token=fake_token'
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
