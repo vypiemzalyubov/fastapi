@@ -42,21 +42,12 @@ Accept-Language: en-US,en;q=0.9,es;q=0.8
 uvicorn app.main:app --reload
 ```
 2. Сделать тестовый запрос в терминале
-```bash
-curl -i -X 'POST' \
-  'http://localhost:8000/login' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "username": "John",
-  "password": "Travolta"  
-}'
-```
 ```python
 curl -X 'GET' \
-  'http://localhost:8000/user' \
+  'http://localhost:8000/headers' \
   -H 'accept: application/json' \
-  -H 'Cookie: session_token=fake_token'
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' \
+  -H 'accept-language: en-US,en;q=0.9,es;q=0.8'
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
