@@ -42,3 +42,23 @@ Content-Type: application/json
 ```
 
 **!!!!Примечание: Поскольку это упрощенная задача программирования, крайне важно принять дополнительные меры безопасности и следовать рекомендациям для реальных приложений. Кроме того, обработка токенов, механизмы обновления и отзыв токенов являются важными аспектами, которые необходимо учитывать при создании готовой к работе системы аутентификации!!!!**
+
+---
+
+1. Запустить приложение
+```python
+uvicorn app.main:app --reload
+```
+2. Сделать тестовый запрос в терминале
+```python
+curl -X POST \
+  'http://127.0.0.1:8000/login' \
+  -H 'Content-Type: application/json' \
+  -d '{"username": "Gosling", "password": "goslingpass"}'
+
+curl -X GET \
+  'http://127.0.0.1:8000/protected_resource' \
+  -H 'Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJHb3NsaW5nIiwiZXhwIjoxNzAwODk3ODA3fQ.iGl1A1n6pz52lK9YV5cDiQvf8PHqaNLzPyCF61-9nQ4'
+```
+
+Посмотреть Swagger: http://localhost:8000/docs
