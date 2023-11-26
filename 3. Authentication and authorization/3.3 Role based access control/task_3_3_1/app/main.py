@@ -18,14 +18,14 @@ def login(user_in: OAuth2PasswordRequestForm = Depends()) -> dict[str, str]:
 
 
 @app.get("/protected_resource")
-def get_protected(current_user: User = Depends(check_role)) -> dict[str, str]:
+def get_protected(current_user: User = Depends(check_role({"admin", "user"}))) -> dict[str, str]:
     return {
         "message": f"Hi, {current_user.username}! Access to the resource has been granted"
     }
 
 
 @app.get("/roles")
-def get_role_access(current_user: User = Depends(check_role)) -> dict[str, str]:
+def get_role_access(current_user: User = Depends(check_role({"admin", "user", "guest"}))) -> dict[str, str]:
     return {
         "message": f"Hi, {current_user.username}!",
         "role": current_user.role,

@@ -66,14 +66,15 @@ def verify_jwt_token(token: str = Depends(oauth2_scheme)):
         )
 
 
-def check_role(current_user: User = Depends(verify_jwt_token)):
-    allowed_roles = {"user", "admin"}
-    if current_user.role not in allowed_roles:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Insufficient permissions"
-        )
-    return current_user
+def check_role(roles: set[str]):
+    def role_validator(current_user: User = Depends(verify_jwt_token)):
+        if current_user.role not in roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Insufficient permissions"
+            )
+        return current_user
+    return role_validator
 
 
 def get_permissions(current_user: User) -> str:
