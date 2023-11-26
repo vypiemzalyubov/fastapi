@@ -1,2 +1,5 @@
 fastapi[all]
 PyJWT
+python-multipart
+passlib
+bcrypt
