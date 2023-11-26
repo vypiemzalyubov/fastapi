@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from app.security import authenticate_user, create_jwt_token, has_role, get_permissions
+from app.security import authenticate_user, create_jwt_token, check_role, get_permissions
 from app.models.user import User
 
 app = FastAPI()
@@ -18,16 +18,16 @@ def login(user_in: OAuth2PasswordRequestForm = Depends()) -> dict[str, str]:
 
 
 @app.get("/protected_resource")
-def get_protected(current_user: User = Depends(has_role({"user"}))) -> dict[str, str]:
+def get_protected(current_user: User = Depends(check_role)) -> dict[str, str]:
     return {
-        "message": f"Welcome, {current_user.username}! Access to the resource has been granted"
+        "message": f"Hi, {current_user.username}! Access to the resource has been granted"
     }
 
 
 @app.get("/roles")
-def get_role_access(current_user: User = Depends(has_role({"user", "guest"}))) -> dict[str, str]:
+def get_role_access(current_user: User = Depends(check_role)) -> dict[str, str]:
     return {
-        "message": f"Welcome, {current_user.username}!",
+        "message": f"Hi, {current_user.username}!",
         "role": current_user.role,
-        "permissions": get_permissions(current_user.permissions)
+        "permissions": f"Available operations: {get_permissions(current_user)}"
     }

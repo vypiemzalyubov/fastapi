@@ -1,10 +1,10 @@
 import jwt
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta
 from secrets import token_urlsafe
 from passlib.context import CryptContext
-from app.models.user import User
+from app.models.user import CRUD, User
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
@@ -14,26 +14,19 @@ ALGORITHM = "HS256"
 EXPIRATION_TIME = timedelta(minutes=1)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-CRUD = ("create", "read", "update", "delete")
-create = 0b1000
-read = 0b0100
-update = 0b0010
-delete = 0b0001
-
 
 USERS_DATA = [
-    {"username": "admin", "password": "adminpass", "role": "admin", "permissions": create | read | update | delete},
-    {"username": "user", "password": "userpass", "role": "user", "permissions": read | update},
-    {"username": "guest", "password": "guestpass", "role": "guest", "permissions": read}
+    {"username": "admin", "password": "adminpass", "role": "admin",
+        "permissions": f"{CRUD.CREATE.value}, {CRUD.READ.value}, {CRUD.UPDATE.value}, {CRUD.DELETE.value}"},
+    {"username": "user", "password": "userpass", "role": "user",
+        "permissions": f"{CRUD.READ.value}, {CRUD.UPDATE.value}"},
+    {"username": "guest", "password": "guestpass", "role": "guest",
+        "permissions": f"{CRUD.READ.value}"}
 ]
+
 
 for user in USERS_DATA:
     user["password"] = pwd_context.hash(user["password"])
-
-
-def get_permissions(value: int) -> str:
-    permissions = dict(zip(CRUD, tuple(bin(value)[2:].zfill(4))))
-    return ", ".join(k for k, v in permissions.items() if int(v))
 
 
 def authenticate_user(username: str, password: str) -> bool:
@@ -73,12 +66,18 @@ def verify_jwt_token(token: str = Depends(oauth2_scheme)):
         )
 
 
-def has_role(roles: set[str]):
-    def role_validator(current_user: User = Depends(verify_jwt_token)):
-        roles.add("admin")
-        if current_user.role not in roles:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, 
-                detail="Not enough permissions")
-        return current_user
-    return role_validator
+def check_role(current_user: User = Depends(verify_jwt_token)):
+    allowed_roles = {"user", "admin"}
+    if current_user.role not in allowed_roles:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions"
+        )
+    return current_user
+
+
+def get_permissions(current_user: User) -> str:
+    for user in USERS_DATA:
+        if user["username"] == current_user.username:
+            return user["permissions"]
+    return None
