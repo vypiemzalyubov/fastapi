@@ -8,3 +8,4 @@ asyncpg
 psycopg2-binary
 alembic
 databases[postgresql]
+python-dotenv
