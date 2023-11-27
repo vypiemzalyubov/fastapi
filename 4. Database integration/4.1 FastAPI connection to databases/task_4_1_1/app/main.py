@@ -1,14 +1,12 @@
 from fastapi import FastAPI
+from app.models.schemas import Todo
+from app.db.database import Base, get_db, session, engine
+from app.models import schemas, models
 
 app = FastAPI()
 
-app.models.Base.metadata.create_all(bind=app.db.engine)
+models.Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-async def root():
+@app.post("/todo")
+async def create():
     return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}

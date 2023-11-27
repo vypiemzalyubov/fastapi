@@ -4,8 +4,9 @@ python-multipart
 passlib
 bcrypt
 sqlalchemy
+fastapi-users[sqlalchemy]
 asyncpg
-psycopg2-binary
+psycopg2   #psycopg2-binary
 alembic
 databases[postgresql]
 python-dotenv
