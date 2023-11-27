@@ -3,3 +3,5 @@ PyJWT
 python-multipart
 passlib
 bcrypt
+asyncpg
+psycopg2
