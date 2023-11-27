@@ -10,6 +10,8 @@ FastAPI - это современный, высокопроизводитель�
 
 - [**Введение в FastAPI**](https://github.com/vypiemzalyubov/fastapi/tree/main/1.%20Introduction%20to%20FastAPI)
 - [**Обработка запросов и их проверка**](https://github.com/vypiemzalyubov/fastapi/tree/main/2.%20Processing%20and%20verification%20of%20requests)
+- [**Аутентификация и авторизация**](https://github.com/vypiemzalyubov/fastapi/tree/main/3.%20Authentication%20and%20authorization)
+- [**Интеграция баз данных**](https://github.com/vypiemzalyubov/fastapi/tree/main/4.%20Database%20integration)
 
 ---
 
