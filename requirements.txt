@@ -5,8 +5,6 @@ passlib
 bcrypt
 sqlalchemy
 fastapi-users[sqlalchemy]
-asyncpg
-psycopg2   #psycopg2-binary
+psycopg2
 alembic
-databases[postgresql]
-python-dotenv
+python-dotenv==1.0.0
