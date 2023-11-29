@@ -8,4 +8,4 @@ class Todo(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     description = Column(String)
-    completed = Column(Boolean, default=True)
+    completed = Column(Boolean, default=False)
