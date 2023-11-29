@@ -55,16 +55,36 @@ GET /todos/1
 ```python
 uvicorn app.main:app --reload
 ```
-2. Сделать тестовый запрос в терминале
-```python
-curl -X POST \
-  'http://127.0.0.1:8000/token' \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'username=admin&password=adminpass'
+2. Запустить на localhost базу данных
 
-curl -X GET \
-  'http://127.0.0.1:8000/protected_resource' \
-  -H 'Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwMTAwMDYxNn0.U1Fz37cbjEah0cVCUhhP-joeU7gzYb7W-CYXGD36Gvg'
+3. Сделать тестовые запросы в терминале
+```python
+curl -X 'POST' \
+  'http://localhost:8000/todos/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "title": "Buy groceries",
+  "description": "Milk, eggs, bread"
+}'
+
+curl -X 'GET' \
+  'http://localhost:8000/todos/1' \
+  -H 'accept: application/json'
+
+curl -X 'PUT' \
+  'http://localhost:8000/todos/1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "title": "New title",
+  "description": "New description",
+  "completed": false
+}'
+
+curl -X 'DELETE' \
+  'http://localhost:8000/todos/1' \
+  -H 'accept: application/json'
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
