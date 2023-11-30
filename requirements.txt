@@ -1,10 +1,12 @@
 fastapi[all]
-PyJWT
-python-multipart
-passlib
-bcrypt
-sqlalchemy
+databases[asyncpg]
 fastapi-users[sqlalchemy]
-psycopg2
-alembic
+PyJWT==2.8.0
+python-multipart==0.0.6
+passlib==1.7.4
+bcrypt==4.1.1
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9 #linux
+# psycopg2
+alembic==1.12.1
 python-dotenv==1.0.0
