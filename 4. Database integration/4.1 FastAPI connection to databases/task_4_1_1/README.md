@@ -55,7 +55,7 @@ GET /todos/1
 ```python
 uvicorn app.main:app --reload
 ```
-2. Запустить на localhost базу данных
+2. Запустить на localhost базу данных PostgreSQL, порт 5432
 
 3. Сделать тестовые запросы в терминале
 ```python
@@ -78,8 +78,7 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{
   "title": "New title",
-  "description": "New description",
-  "completed": false
+  "description": "New description"
 }'
 
 curl -X 'DELETE' \

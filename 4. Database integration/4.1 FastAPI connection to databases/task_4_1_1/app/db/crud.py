@@ -28,6 +28,8 @@ def update_todo_db(db: Session, todo_id: int, new_todo: schemas.UpdateTodo):
 
 def delete_todo_db(db: Session, todo_id: int):
     delete_todo = read_todo_db(db=db, id=todo_id)
-    db.delete(delete_todo)
-    db.commit()
-    return delete_todo
+    if delete_todo:
+        db.delete(delete_todo)
+        db.commit()
+        return delete_todo
+    return None
