@@ -24,4 +24,7 @@ uvicorn main:app --reload
 
 # Open localhost
 http://localhost:8000
+
+# Open Swagger
+http://localhost:8000/docs
 ```
