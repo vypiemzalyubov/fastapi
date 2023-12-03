@@ -8,6 +8,11 @@ from app.models import schemas
 app = FastAPI(title="Task 4.1.1")
 
 
+@app.on_event("startup")
+def create_tables_on_startup():
+    SyncCRUD.create_tables()
+
+
 @app.post("/todos/", status_code=status.HTTP_201_CREATED, response_model=schemas.ReadTodo)
 def create_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db)):
     creating_todo = SyncCRUD.create_todo_db(db=db, new_todo=todo)

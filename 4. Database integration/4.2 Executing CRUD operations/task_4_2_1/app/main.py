@@ -8,6 +8,12 @@ from app.models import schemas
 app = FastAPI(title="Task 4.2.1")
 
 
+# @app.on_event("startup")
+# async def create_tables_on_startup():
+#     crud = AsyncCRUD()
+#     await crud.create_tables()
+
+
 @app.post("/todos/", status_code=status.HTTP_201_CREATED, response_model=schemas.ReadTodo)
 async def create_todo(todo: schemas.CreateTodo, db: AsyncSession = Depends(get_db)):
     creating_todo = await AsyncCRUD.create_todo_db(db=db, new_todo=todo)

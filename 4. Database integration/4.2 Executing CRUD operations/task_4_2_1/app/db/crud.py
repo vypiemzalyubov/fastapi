@@ -5,6 +5,7 @@ from app.models import models, schemas
 
 class AsyncCRUD:
 
+    @staticmethod
     async def create_tables():
         async with async_engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
@@ -19,7 +20,7 @@ class AsyncCRUD:
             description=new_todo.description,
             completed=new_todo.completed
         )
-        db.add(add_todo)
+        await db.add(add_todo)
         await db.commit()
         await db.refresh(add_todo)
         return add_todo
