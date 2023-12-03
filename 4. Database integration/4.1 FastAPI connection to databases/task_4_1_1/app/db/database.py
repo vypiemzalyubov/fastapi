@@ -1,19 +1,25 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from app.db.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from app.db.config import settings
 
 
-DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+sync_engine = create_engine(
+    url=settings.DATABASE_URL_psycopg,
+    echo=True,
+    pool_size=5,
+    max_overflow=10
+)
 
-engine = create_engine(DATABASE_URL)
-session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+session_factory = sessionmaker(sync_engine)
+
+
+class Base(DeclarativeBase):
+    pass
 
 
 def get_db():
-    db = session()
+    db = session_factory()
     try:
         yield db
     finally:
