@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import Base, async_engine
-from app.models import models, schemas
+from app.models.models import Todo
+from app.models.schemas import CreateTodo, ReadTodo, UpdateTodo
 
 
 class AsyncCRUD:
@@ -11,21 +12,24 @@ class AsyncCRUD:
             await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
 
+    @staticmethod
     async def read_todo_db(db: AsyncSession, id: int):
-        return await db.query(models.Todo).filter(models.Todo.id == id).first()
+        return await db.query(Todo).filter(Todo.id == id).first()
 
-    async def create_todo_db(db: AsyncSession, new_todo: schemas.CreateTodo):
-        add_todo = models.Todo(
+    @staticmethod
+    async def create_todo_db(db: AsyncSession, new_todo: CreateTodo):
+        add_todo = Todo(
             title=new_todo.title,
             description=new_todo.description,
             completed=new_todo.completed
         )
-        await db.add(add_todo)
+        db.add(add_todo)
         await db.commit()
-        await db.refresh(add_todo)
+        # await db.refresh(add_todo)
         return add_todo
 
-    async def update_todo_db(db: AsyncSession, todo_id: int, new_todo: schemas.UpdateTodo):
+    @staticmethod
+    async def update_todo_db(db: AsyncSession, todo_id: int, new_todo: UpdateTodo):
         update_todo = AsyncCRUD.read_todo_db(
             db=db,
             id=todo_id
@@ -37,10 +41,11 @@ class AsyncCRUD:
         await db.refresh(update_todo)
         return update_todo
 
+    @staticmethod
     async def delete_todo_db(db: AsyncSession, todo_id: int):
         delete_todo = AsyncCRUD.read_todo_db(db=db, id=todo_id)
         if delete_todo:
-            await db.delete(delete_todo)
+            db.delete(delete_todo)
             await db.commit()
             return delete_todo
         return None
