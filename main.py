@@ -56,8 +56,6 @@ async def create_user(user: UserCreate):
         raise HTTPException(status_code=500, detail="Failed to create user")
 
 # маршрут для получения информации о юзере по ID
-
-
 @app.get("/user/{user_id}", response_model=UserReturn)
 async def get_user(user_id: int):
     query = "SELECT * FROM users WHERE id = :user_id"
@@ -73,8 +71,6 @@ async def get_user(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
 
 # роут для обновления информации о юзере по ID
-
-
 @app.put("/user/{user_id}", response_model=UserReturn)
 async def update_user(user_id: int, user: UserCreate):
     query = "UPDATE users SET username = :username, email = :email WHERE id = :user_id"
@@ -95,7 +91,8 @@ async def delete_user(user_id: int):
     try:
         deleted_rows = await database.execute(query=query, values=values)
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to delete user from database")
+        raise HTTPException(
+            status_code=500, detail="Failed to delete user from database")
     if deleted_rows:
         return {"message": "User deleted successfully"}
     else:
