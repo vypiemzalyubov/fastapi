@@ -16,7 +16,7 @@ app = FastAPI(lifespan=lifespan)
 # app = FastAPI()
 
 # URL для PostgreSQL (измените его под свою БД)
-DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/postgres"
+DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/fastapidb"
 
 database = Database(DATABASE_URL)
 
@@ -32,16 +32,6 @@ class UserReturn(BaseModel):
     username: str
     email: str
     id: Optional[int] = None
-
-
-# тут устанавливаем условия подключения к базе данных и отключения - можно использовать в роутах контекстный менеджер async with Database(...) as db: etc
-# @app.on_event("startup")
-# async def startup_database():
-#     await database.connect()
-
-# @app.on_event("shutdown")
-# async def shutdown_database():
-#     await database.disconnect()
 
 
 # создание роута для создания юзеров
