@@ -15,7 +15,7 @@ app = FastAPI(lifespan=lifespan, title="Task 4.2.1")
 
 
 @app.post("/todos/", response_model=ReturnTodo, status_code=status.HTTP_201_CREATED)
-async def create(todo: CreateTodo):
+async def create_todo(todo: CreateTodo):
     result = await create_todo_db(todo)
     return result
 
