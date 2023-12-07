@@ -1,76 +1,54 @@
-from fastapi import FastAPI, HTTPException, Request, Response, status
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, PlainTextResponse
-from starlette.exceptions import HTTPException as StarletteHTTPException
+from datetime import datetime
+from fastapi import FastAPI, Request, Response, Cookie
+from fastapi.responses import JSONResponse
 from app.models.schemas import UserRegister, ErrorResponseModel
-
+from app.data import USER_DATA, sessions, get_user_from_db
+from app.exceptions import UserNotFoundException, InvalidUserCookiesException
 
 app = FastAPI(title="Task 5.3.1")
 
-user_list: list[UserRegister] = []
 
-
-error_template = {
-    "username": "Username must be a string",
-    "age": "Age must be greater than 18",
-    "email": "Invalid email format",
-    "password": "Password length must be between 8 and 16",
-    "phone": "Invalid phone format"
-}
-
-
-@app.exception_handler(RequestValidationError)
-def custom_exception_handler(request: Request, exc: RequestValidationError):
-    errors = exc.errors()
-    custom_message = []
-    for error in errors:
-        field = error["loc"][1]
-        message = error_template.get(field)
-        custom_message.append({"field": field, "message": message})
+@app.exception_handler(UserNotFoundException)
+async def validation_user_not_found(request: Request, exc: ErrorResponseModel):
+    start = datetime.utcnow()
     return JSONResponse(
-        status_code=400,
-        content=custom_message
+        status_code=exc.status_code,
+        content={"status_code": exc.status_code,
+                 "error": "There is no such user here",
+                 "solution": exc.solution},
+        headers={"X-ErrorHandleTime": str(start - datetime.utcnow())}
     )
 
 
-class InvalidUserDataException(HTTPException):
-    def __init__(self,
-                 status_code: int = status.HTTP_400_BAD_REQUEST,
-                 detail: str = "Invalid registration data",
-                 headers: dict = {"X-ErrorHandleTime": "My headers"}):
-        super().__init__(status_code=status_code, detail=detail, headers=headers)
+@app.exception_handler(InvalidUserCookiesException)
+async def validation_user_cookies(request: Request, exc: ErrorResponseModel):
+    start = datetime.utcnow()
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"status_code": exc.status_code,
+                 "error": "Oh, authorization failed...",
+                 "solution": exc.solution},
+        headers={"X-ErrorHandleTime": str(start - datetime.utcnow())}
+    )
 
 
-class UserNotFoundException(HTTPException):
-    def __init__(self,
-                 status_code: int = status.HTTP_404_NOT_FOUND,
-                 detail: str = "User not found",
-                 headers: dict = {"X-ErrorHandleTime": "My headers"}):
-        super().__init__(status_code=status_code, detail=detail, headers=headers)
+@app.post("/login")
+async def login_user(user: UserRegister, response: Response):
+    for person in USER_DATA:
+        if person.username == user.username and person.password == user.password:
+            session_token = "fake_token"
+            sessions[session_token] = get_user_from_db(user.username)
+            response.set_cookie(key="session_token",
+                                value=session_token, httponly=True)
+            return {"message": "cookies set"}
+        else:
+            raise UserNotFoundException
 
 
-# @app.exception_handler(StarletteHTTPException)
-# async def http_exception_handler(request, exc):
-#     return PlainTextResponse(str(exc.detail), status_code=exc.status_code)
-
-
-# @app.exception_handler(RequestValidationError)
-# async def validation_exception_handler(request, exc):
-#     return PlainTextResponse("You're too young", status_code=403)
-
-
-@app.post("/register_user", response_model=UserRegister)
-async def register_user(user: UserRegister):
-    if "fake" in user.username:
-        raise HTTPException(status_code=418, detail="Fake is not welcome here")
-    user_list.append(dict(user))
-    return user
-
-
-@app.get("/get_user")
-async def get_user(username: str):
-    user = [user for user in user_list if username == user["username"]]
+@app.get("/user")
+async def get_user(session_token=Cookie()):
+    user = sessions.get(session_token)
     if user:
-        return user_list[0]
+        return user.dict()
     else:
-        raise UserNotFoundException
+        raise InvalidUserCookiesException

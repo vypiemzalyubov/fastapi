@@ -27,19 +27,21 @@
 uvicorn app.main:app --reload
 ```
 
-2. Сделать тестовый запрос в терминале
+2. Сделать тестовые запросы в терминале
 ```python
-curl -X 'POST' \
-  'http://127.0.0.1:8000/exceptions' \
+curl -i -X 'POST' \
+  'http://127.0.0.1:8000/login' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "username": 1,
-  "age": 18,
-  "email": "userexample.com",
-  "password": "123",
-  "phone": 8808888888
+  "username": "fake",
+  "password": "weakpass"
 }'
+
+curl -i -X 'GET' \
+  'http://127.0.0.1:8000/user' \
+  -H 'accept: application/json' \
+  -H 'Cookie: session_token=kek'
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
