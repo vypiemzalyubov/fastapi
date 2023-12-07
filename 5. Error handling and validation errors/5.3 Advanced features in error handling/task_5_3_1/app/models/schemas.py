@@ -1,16 +1,10 @@
-from pydantic import BaseModel, EmailStr, conint
+from pydantic import BaseModel, EmailStr, conint, constr
 
 
 class UserRegister(BaseModel):
     username: str
-    password: str
     age: conint(gt=18)
-    email: EmailStr
-
-
-class UserReturn(BaseModel):
-    username: str
-    age: int
+    password: constr(min_length=4, max_length=8)
     email: EmailStr
 
 
