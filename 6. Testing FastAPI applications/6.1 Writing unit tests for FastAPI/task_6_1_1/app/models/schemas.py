@@ -1,12 +1,13 @@
 from pydantic import BaseModel
 
 
-class UserCreate(BaseModel):
-    username: str
-    password: str
-    email: str
-    age: int
+class CreateTodo(BaseModel):
+    title: str
+    description: str
+    completed: bool = False
 
 
-class UserGet(UserCreate):
+class ReturnTodo(BaseModel):
     id: int
+    title: str
+    description: str
