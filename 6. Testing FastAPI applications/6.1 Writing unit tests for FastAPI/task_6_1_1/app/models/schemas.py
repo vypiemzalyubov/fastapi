@@ -1,13 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, constr, EmailStr, Field
 
 
-class CreateTodo(BaseModel):
-    title: str
-    description: str
-    completed: bool = False
+class UserCreate(BaseModel):
+    username: str
+    password: constr(min_length=8, max_length=16)
+    email: EmailStr
 
 
-class ReturnTodo(BaseModel):
+class UserGet(UserCreate):
     id: int
-    title: str
-    description: str
+    password: constr(min_length=8, max_length=16) = Field(..., exclude=True)

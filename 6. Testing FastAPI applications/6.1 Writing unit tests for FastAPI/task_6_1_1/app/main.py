@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
-from app.db.database import database, create_table, create_todo_db, get_todo_db, update_todo_db, delete_todo_db
-from app.models.schemas import CreateTodo, ReturnTodo
+from app.db.database import database, create_table, create_in_db, get_from_db, delete_from_db
+from app.models.schemas import UserCreate, UserGet
 
 
 @asynccontextmanager
@@ -11,28 +11,21 @@ async def lifespan(app: FastAPI):
     yield
     await database.disconnect()
 
-app = FastAPI(lifespan=lifespan, title="Task 4.2.1")
+app = FastAPI(lifespan=lifespan, title="Task 6.1.1")
 
 
-@app.post("/todos/", response_model=ReturnTodo, status_code=status.HTTP_201_CREATED)
-async def create_todo(todo: CreateTodo):
-    result = await create_todo_db(todo)
+@app.post("/users/", response_model=UserGet, status_code=status.HTTP_201_CREATED)
+async def create_user(user: UserCreate):
+    result = await create_in_db(user)
+    return result
+
+@app.get("/users/{user_id}", response_model=UserGet)
+async def get_user(user_id: int):
+    result = await get_from_db(user_id)
     return result
 
 
-@app.get("/todos/{todo_id}", response_model=ReturnTodo)
-async def get_todo(todo_id: int):
-    result = await get_todo_db(todo_id)
-    return result
-
-
-@app.put("/todos/{todo_id}", response_model=ReturnTodo)
-async def update_todo(todo_id: int, todo: CreateTodo):
-    result = await update_todo_db(todo_id, todo)
-    return result
-
-
-@app.delete("/todos/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_todo(todo_id: int):
-    result = await delete_todo_db(todo_id)
+@app.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(user_id: int):
+    result = await delete_from_db(user_id)
     return result

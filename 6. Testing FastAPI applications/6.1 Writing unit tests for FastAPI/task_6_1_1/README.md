@@ -19,3 +19,42 @@
 После выполнения задачи у вас должен быть набор модульных тестов, которые тщательно проверяют функциональность вашего приложения FastAPI. Выполнение тестов с помощью pytest должно привести к прохождению всех тестовых примеров, что указывает на надежность вашего приложения и отсутствие критических ошибок.
 
 _Примечание: Вы можете использовать фреймворк `pytest` и плагин `pytest-asyncio` для написания асинхронных модульных тестов в FastAPI._
+
+---
+
+1. Запустить приложение
+```python
+uvicorn app.main:app --reload
+```
+2. Запустить на localhost базу данных PostgreSQL, порт 5432
+
+3. Сделать тестовые запросы в терминале
+```python
+curl -X 'POST' \
+  'http://localhost:8000/todos/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "title": "Buy groceries",
+  "description": "Milk, eggs, bread"
+}'
+
+curl -X 'GET' \
+  'http://localhost:8000/todos/1' \
+  -H 'accept: application/json'
+
+curl -X 'PUT' \
+  'http://localhost:8000/todos/1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "title": "New title",
+  "description": "New description"
+}'
+
+curl -X 'DELETE' \
+  'http://localhost:8000/todos/1' \
+  -H 'accept: application/json'
+```
+
+Посмотреть Swagger: http://localhost:8000/docs

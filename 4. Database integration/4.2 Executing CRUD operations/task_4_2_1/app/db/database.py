@@ -15,7 +15,7 @@ async def create_table() -> dict[str, str]:
             await database.execute(query=query_drop)
         except Exception as e:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"{e} Failed to drop table")
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to drop table")
     query_create = ("CREATE TABLE todo (id SERIAL PRIMARY KEY, title VARCHAR(255) NOT NULL,"
                     " description VARCHAR(255) NOT NULL, completed BOOLEAN)")
     try:
@@ -47,7 +47,7 @@ async def get_todo_db(todo_id: int) -> ReturnTodo:
         result = await database.fetch_one(query=query, values=values)
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail="Failed to fetch user from database")
+            status_code=500, detail="Failed to fetch todo from database")
     if result:
         return ReturnTodo(title=result["title"], description=result["description"], id=result["id"])
     else:
