@@ -26,35 +26,32 @@ _Примечание: Вы можете использовать фреймво
 ```python
 uvicorn app.main:app --reload
 ```
-2. Запустить на localhost базу данных PostgreSQL, порт 5432
+2. Запустить на localhost базу данных PostgreSQL с именем fastapidb, порт 5432
 
 3. Сделать тестовые запросы в терминале
 ```python
 curl -X 'POST' \
-  'http://localhost:8000/todos/' \
+  'http://localhost:8000/users/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "title": "Buy groceries",
-  "description": "Milk, eggs, bread"
+  "username": "Dale",
+  "password": "dalepass",
+  "email": "dale@disney.com"
 }'
 
 curl -X 'GET' \
-  'http://localhost:8000/todos/1' \
+  'http://localhost:8000/users/1' \
   -H 'accept: application/json'
-
-curl -X 'PUT' \
-  'http://localhost:8000/todos/1' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "title": "New title",
-  "description": "New description"
-}'
 
 curl -X 'DELETE' \
-  'http://localhost:8000/todos/1' \
-  -H 'accept: application/json'
+  'http://localhost:8000/users/1' \
+  -H 'accept: */*'
+```
+
+4. Запуск тестов
+```python
+pytest app/tests/test_main.py
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs

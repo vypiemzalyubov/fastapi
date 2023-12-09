@@ -19,7 +19,8 @@ async def create_user(user: UserCreate):
     result = await create_in_db(user)
     return result
 
-@app.get("/users/{user_id}", response_model=UserGet)
+
+@app.get("/users/{user_id}", response_model=UserGet, status_code=status.HTTP_200_OK)
 async def get_user(user_id: int):
     result = await get_from_db(user_id)
     return result
