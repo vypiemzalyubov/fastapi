@@ -1,8 +1,7 @@
 fastapi[all]
 PyJWT==2.8.0
 python-multipart==0.0.6
-passlib==1.7.4
-bcrypt==4.1.1
+passlib[bcrypt]
 python-dotenv==1.0.0
 databases[asyncpg]
 alembic==1.13.0
