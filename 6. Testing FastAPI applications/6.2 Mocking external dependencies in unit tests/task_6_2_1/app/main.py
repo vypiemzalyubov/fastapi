@@ -29,9 +29,15 @@ def fetch_data_from_api(endpoint: str,
 
 def process_data(data):
     new_data = {}
-    for key, value in data.items():
-        if data[key]:
-            new_data[key] = value
+    if "results" in data.keys():
+        for result in data["results"]:
+            for key, value in result.items():
+                if result[key]:
+                    new_data[key] = value
+    else:
+        for key, value in data.items():
+            if key in ("title", "news_site"):
+                new_data[key] = value
     return new_data
 
 
