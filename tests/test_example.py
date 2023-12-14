@@ -1,19 +1,31 @@
 from fastapi.testclient import TestClient
-from main import app
+from main import app  # тут замените импорт на правильное расположение файла
+
 
 client = TestClient(app)
 
-def test_read_item():
-    # Отправляем запрос на конечную точку /items/{item_id} с item_id=1
-    response = client.get("/items/1")
 
-    # Assertions
+def test_login_and_access_data():
+    # тестируем точку логина, направляя учетные данные и получая куки
+    login_data = {
+        "username": "user123",
+        "password": "secretpassword"
+    }
+    response = client.post("/login/", json=login_data)
     assert response.status_code == 200
-    assert response.json() == {"item_id": 1}
+    assert "set-cookie" in response.headers
 
-    # Отправляем запрос на конечную точку /items/{item_id} с item_id=z (неправильный тип данных)
-    response = client.get("/items/z")
+    # извлекаем куки из ответа
+    cookies = response.cookies
+    cookie_value = cookies["session_cookie"]
 
-    # Assertions
-    assert response.status_code == 200  # Это завершится ошибкой, поскольку конечная точка не обработает наш тип данных
-    assert response.json() == {"item_id": "z"}  # это тоже завершится ошибкой по той же причине
+    # проверяем доступ к получению информации через полученные куки
+    headers = {
+        "Cookie": f"session_cookie= {cookie_value}"
+    }
+    response = client.get("/protected_data/", headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert "user_id" in data
+    assert "username" in data
+    assert "email" in data
