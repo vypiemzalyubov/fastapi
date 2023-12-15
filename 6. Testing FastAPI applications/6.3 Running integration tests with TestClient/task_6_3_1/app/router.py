@@ -4,7 +4,7 @@ from app.models.schemas import UserCreate, UserGet
 
 
 router = APIRouter(
-    prefix="/db"
+    prefix="/v1"
 )
 
 
