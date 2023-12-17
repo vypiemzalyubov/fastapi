@@ -1,11 +1,18 @@
-fastapi[all]
-PyJWT==2.8.0
-python-multipart==0.0.6
-passlib[bcrypt]
-python-dotenv==1.0.0
-databases[asyncpg]
-alembic==1.13.0
-# psycopg2==2.9.9
-# psycopg2-binary==2.9.9 #linux
-pytest==7.4.3
-requests==2.31.0
+# fastapi[all]
+# PyJWT==2.8.0
+# python-multipart==0.0.6
+# passlib[bcrypt]
+# python-dotenv==1.0.0
+# databases[asyncpg]
+# alembic==1.13.0
+# # psycopg2==2.9.9
+# # psycopg2-binary==2.9.9 #linux
+# pytest==7.4.3
+# requests==2.31.0
+
+
+fastapi
+uvicorn
+sqlalchemy
+psycopg2 #psycopg2-binary #linux
+asyncpg
