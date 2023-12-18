@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic[email]
+pydantic-settings
+sqlalchemy
+# psycopg2 
+psycopg2-binary #linux
+asyncpg
+alembic
