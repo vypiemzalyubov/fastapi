@@ -12,4 +12,5 @@ class UserCreate(BaseModel):
 
 class UserFromDB(UserCreate):
     id: int
+    password: str
     created_at: datetime.datetime

@@ -6,6 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.schemas.user import UserCreate
 from app.db.models import User
 
+from app.utils.utils import hash_pass
+
 
 class UserRepository(ABC):
 
@@ -14,11 +16,11 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    async def create_user(self, todo: UserCreate) -> User:
+    async def create_user(self, user: UserCreate) -> User:
         pass
 
     @abstractmethod
-    async def update_user(self, user_id: int, todo: UserCreate) -> User:
+    async def update_user(self, user_id: int, user: UserCreate) -> User:
         pass
 
     @abstractmethod
@@ -36,6 +38,8 @@ class SqlAlchemyUserRepository(UserRepository):
         return stmt.scalar()
 
     async def create_user(self, user: UserCreate) -> User:
+        hashed_pass = hash_pass(user.password)
+        user.password = hashed_pass
         stmt = User(**user.model_dump())
         self.session.add(stmt)
         await self.session.commit()
@@ -43,6 +47,8 @@ class SqlAlchemyUserRepository(UserRepository):
         return stmt
 
     async def update_user(self, user_id: int, user: UserCreate) -> User:
+        hashed_pass = hash_pass(user.password)
+        user.password = hashed_pass        
         stmt = await self.get_user(user_id)
         if stmt:
             for key, value in user.model_dump().items():
