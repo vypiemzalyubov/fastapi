@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.schemas.user import UserCreate, UserFromDB
 from app.db.database import get_async_session
 from app.repositories.user_repository import UserRepository, SqlAlchemyUserRepository
+from app.api.endpoints.auth import authenticate_user
 
 user_router = APIRouter(
     prefix="/users",
@@ -17,7 +18,7 @@ async def get_user_repository(session: AsyncSession = Depends(get_async_session)
 
 
 @user_router.get("/{user_id}", response_model=UserFromDB)
-async def get_user(user_id: int, repo: UserRepository = Depends(get_user_repository)):
+async def get_user(user_id: int, repo: UserRepository = Depends(get_user_repository), user: UserCreate = Depends(authenticate_user)):
     result = await repo.get_user(user_id)
     if result is None:
         raise HTTPException(
