@@ -49,7 +49,7 @@ class SqlAlchemyUserRepository(UserRepository):
     async def update_user(self, user_id: int, user: UserCreate) -> User:
         hashed_pass = hash_pass(user.password)
         user.password = hashed_pass
-        stmt = await self.get_user(user_id)
+        stmt = await self.get_user_by_id(user_id)
         if stmt:
             for key, value in user.model_dump().items():
                 setattr(stmt, key, value)
@@ -59,7 +59,7 @@ class SqlAlchemyUserRepository(UserRepository):
         return None
 
     async def delete_user(self, user_id: int) -> None:
-        stmt = await self.get_user(user_id)
+        stmt = await self.get_user_by_id(user_id)
         if stmt:
             await self.session.delete(stmt)
             await self.session.commit()
