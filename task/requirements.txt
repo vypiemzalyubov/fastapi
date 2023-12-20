@@ -8,5 +8,3 @@ psycopg2-binary #linux
 asyncpg
 alembic
 passlib[bcrypt]
-python-multipart
-python-jose[cryptography]

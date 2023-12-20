@@ -35,6 +35,12 @@ alembic upgrade head
 3. Сделать тестовые запросы в терминале
 ```python
 curl -X 'POST' \
+  'http://127.0.0.1:8000/login/login' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic QTpzdHJpbmdzdA==' \
+  -d ''
+
+curl -X 'POST' \
   'http://127.0.0.1:8000/users/add_user/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
