@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.schemas.user import UserCreate, UserFromDB
@@ -29,7 +28,7 @@ async def get_users(repo: UserRepository = Depends(get_user_repository),
     return result
 
 
-@user_router.post("/add_user/", response_model=UserFromDB, status_code=status.HTTP_201_CREATED)
+@user_router.post("/add_user", response_model=UserFromDB, status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserCreate,
                       repo: UserRepository = Depends(get_user_repository)):
     result = await repo.create_user(user)
@@ -41,7 +40,7 @@ async def create_user(user: UserCreate,
     return result
 
 
-@user_router.post("/update_user/", response_model=UserFromDB)
+@user_router.post("/change_user", response_model=UserFromDB)
 async def update_user(user_id: int,
                       user: UserCreate,
                       repo: UserRepository = Depends(get_user_repository),

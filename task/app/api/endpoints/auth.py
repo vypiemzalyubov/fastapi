@@ -21,7 +21,7 @@ async def get_user_repository(session: AsyncSession = Depends(get_async_session)
 
 
 async def authenticate_user(credentials: HTTPBasicCredentials = Depends(security), repo: UserRepository = Depends(get_user_repository)):
-    user = await repo.get_user_by_username(credentials.username)
+    user = await repo.get_user(username=credentials.username)
     if not user or not verify_password(credentials.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
