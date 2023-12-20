@@ -12,7 +12,7 @@ from app.utils.utils import hash_pass
 class UserRepository(ABC):
 
     @abstractmethod
-    async def get_user(self, user_id: int) -> User:
+    async def get_user_by_id(self, user_id: int) -> User:
         pass
 
     @abstractmethod
@@ -33,7 +33,7 @@ class SqlAlchemyUserRepository(UserRepository):
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def get_user(self, user_id: int) -> User:
+    async def get_user_by_id(self, user_id: int) -> User:
         stmt = await self.session.execute(select(User).filter(User.id == user_id))
         return stmt.scalar()
 
@@ -48,7 +48,7 @@ class SqlAlchemyUserRepository(UserRepository):
 
     async def update_user(self, user_id: int, user: UserCreate) -> User:
         hashed_pass = hash_pass(user.password)
-        user.password = hashed_pass        
+        user.password = hashed_pass
         stmt = await self.get_user(user_id)
         if stmt:
             for key, value in user.model_dump().items():

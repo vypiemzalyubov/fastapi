@@ -9,3 +9,4 @@ asyncpg
 alembic
 passlib[bcrypt]
 python-multipart
+python-jose[cryptography]
