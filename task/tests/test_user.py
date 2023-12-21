@@ -5,7 +5,7 @@ client = TestClient(app)
 
 
 user_data = {
-    "username": "fakeuser7",
+    "username": "fakeuser10",
     "password": "strongpass",
     "age": 20,
     "email": "fake@example.com"
@@ -29,9 +29,10 @@ class TestMain:
         assert response.json()["username"] == user_data["username"]
 
     def test_get_all_users(self):
-        response = client.get("/users/", headers={"Authorization": "QTpzdHJpbmdzdA=="})
-        assert response.status_code == 200
-        assert len(response.json()) > 0
+        response1 = client.post("/auth/login", auth=(user_data.get("username"), user_data.get("password")))
+        response2 = client.get("/users/", headers={"Authorization": "QTpzdHJpbmdzdA=="})
+        assert response2.status_code == 200
+        assert len(response2.json()) > 0
 
     # def test_update_user(self):
     #     updated_user_data = {
