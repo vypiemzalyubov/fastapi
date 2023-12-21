@@ -4,45 +4,34 @@ from main import app
 client = TestClient(app)
 
 
+user_data = {
+    "username": "fakeuser7",
+    "password": "strongpass",
+    "age": 20,
+    "email": "fake@example.com"
+}
+
+
 class TestMain:
 
     def test_create_user(self):
-        user_data = {
-            "username": "loluser",
-            "password": "testzzzzz",
-            "age": 25,
-            "email": "test@example.com"
-        }
         response = client.post("/users/add_user/", json=user_data)
         assert response.status_code == 201
-        # assert response.json()["username"] == user_data["username"]
+        assert response.json()["username"] == user_data["username"]
 
-#     def test_login(self):
-#         response = client.post("/login", data={"username": "loser", "password": "testpassword"})
-#         assert response.status_code == 200
-#         token = response.json()["access_token"]
-#         print(token)
+    def test_create_existing_user(self):
+        response = client.post("/users/add_user/", json=user_data)
+        assert response.status_code == 409
 
-    # def test_create_existing_user(self):
-    #     user_data = {
-    #         "username": "testuser",
-    #         "password": "testpassword",
-    #         "age": 25,
-    #         "email": "test@example.com"
-    #     }
-    #     response = client.post("/users/add_user/", json=user_data)
-    #     assert response.status_code == 409
+    def test_login(self):
+        response = client.post("/auth/login", auth=(user_data.get("username"), user_data.get("password")))
+        assert response.status_code == 200
+        assert response.json()["username"] == user_data["username"]
 
-    # def test_get_all_users(self):
-    #     response = client.get(
-    #         "/users/", headers={"Authorization": "QTpzdHJpbmdzdA=="})
-    #     assert response.status_code == 200
-    #     assert len(response.json()) > 0
-
-    # def test_get_user_by_id(self):
-    #     response = client.get("/users/1")
-    #     assert response.status_code == 200
-    #     assert response.json()["id"] == 1
+    def test_get_all_users(self):
+        response = client.get("/users/", headers={"Authorization": "QTpzdHJpbmdzdA=="})
+        assert response.status_code == 200
+        assert len(response.json()) > 0
 
     # def test_update_user(self):
     #     updated_user_data = {

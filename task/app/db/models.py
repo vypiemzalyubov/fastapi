@@ -9,7 +9,7 @@ from app.db.database import Base
 class User(Base):
     __tablename__ = "user_table"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, index=True, autoincrement=True)
     username: Mapped[str]
     password: Mapped[str]
     age: Mapped[int]
