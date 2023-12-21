@@ -8,3 +8,5 @@ psycopg2-binary #linux
 asyncpg
 alembic
 passlib[bcrypt]
+pytest
+httpx
