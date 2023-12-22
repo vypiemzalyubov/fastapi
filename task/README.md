@@ -73,7 +73,7 @@ curl -X 'DELETE' \
 
 4. Запуск тестов
 ```python
-pytest app/tests/test_main.py
+pytest app/tests/test_user.py
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
