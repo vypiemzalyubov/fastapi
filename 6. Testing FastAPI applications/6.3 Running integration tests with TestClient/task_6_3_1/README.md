@@ -24,34 +24,56 @@
 
 1. Запустить приложение
 ```python
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
-2. Запустить на localhost базу данных PostgreSQL с именем fastapidb, порт 5432
+2. Запустить на localhost базы данных PostgreSQL с именем fastapidb и fastapidb_test, порт 5432
 
+3. Применить миграцию для создания таблицы
+```python
+alembic upgrade head
+```
 3. Сделать тестовые запросы в терминале
 ```python
 curl -X 'POST' \
-  'http://localhost:8000/users/' \
+  'http://127.0.0.1:8000/auth/login' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic WjpzdHJpbmdzdA==' \
+  -d ''
+
+curl -X 'POST' \
+  'http://127.0.0.1:8000/users/add_user/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "username": "Dale",
-  "password": "dalepass",
-  "email": "dale@disney.com"
+  "username": "Fake",
+  "password": "fakepass",
+  "age": 19,
+  "email": "fake@example.com"
 }'
 
 curl -X 'GET' \
-  'http://localhost:8000/users/1' \
+  'http://127.0.0.1:8000/users/1' \
   -H 'accept: application/json'
 
+curl -X 'POST' \
+  'http://127.0.0.1:8000/users/update_user/?user_id=1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "New Fake",
+  "password": "newfakepass",
+  "age": 20,
+  "email": "newfake@example.com"
+}'
+
 curl -X 'DELETE' \
-  'http://localhost:8000/users/1' \
+  'http://127.0.0.1:8000/users/1' \
   -H 'accept: */*'
 ```
 
 4. Запуск тестов
 ```python
-pytest app/tests/test_main.py
+pytest app/tests/test_user.py
 ```
 
 Посмотреть Swagger: http://localhost:8000/docs
