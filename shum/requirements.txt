@@ -2,5 +2,6 @@ alembic
 asyncpg
 fastapi[all]
 fastapi-users[sqlalchemy]
+fastapi-cache2[redis]
 python-dotenv
 sqlalchemy
