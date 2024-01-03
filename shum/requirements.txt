@@ -1,8 +1,0 @@
-alembic
-asyncpg
-fastapi[all]
-fastapi-users[sqlalchemy]
-fastapi-cache2[redis]
-sqlalchemy
-celery
-flower
